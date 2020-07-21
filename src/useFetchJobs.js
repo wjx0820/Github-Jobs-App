@@ -20,6 +20,7 @@ function reducer(state, action) {
 	}
 }
 
+// act as a proxy to solve CORS issue
 const CORS_URL = `https://cors-anywhere.herokuapp.com`
 
 const BASE_URL = `https://jobs.github.com/positions.json`
@@ -35,17 +36,25 @@ export default function useFetchJobs(params, page) {
 	})
 
 	useEffect(() => {
+		const cancelToken = axios.CancelToken.source()
 		dispatch({ type: ACTIONS.MAKE_REQUEST })
 		axios
 			.get(URL, {
+				cancelToken: cancelToken.token,
 				params: { markdown: true, page: page, ...params },
 			})
 			.then((res) => {
 				dispatch({ type: ACTIONS.GET_DATA, payload: { jobs: res.data } })
 			})
 			.catch((e) => {
+				// ignore cancel error, only check errors that occur not because of canceling
+				if (axios.isCancel(e)) return
 				dispatch({ type: ACTIONS.ERROR, payload: { error: e } })
 			})
+
+		return () => {
+			cancelToken.cancel()
+		}
 	}, [params, page])
 
 	return state
