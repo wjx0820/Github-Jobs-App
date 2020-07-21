@@ -30,8 +30,6 @@ const BASE_URL = `https://jobs.github.com/positions.json`
 
 const URL = CORS_URL + `/` + BASE_URL
 
-console.log(`URL`, URL)
-
 export default function useFetchJobs(params, page) {
 	const [state, dispatch] = useReducer(reducer, {
 		jobs: [],
