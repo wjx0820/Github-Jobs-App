@@ -4,6 +4,7 @@ import { Container, Spinner } from 'react-bootstrap'
 import Job from './components/Job'
 import JobsPagination from './components/JobsPagination'
 import SearchForm from './components/SearchForm'
+import ScrollTopArrow from './components/ScrollTopArrow'
 
 function App() {
 	const [params, setParams] = useState({})
@@ -42,6 +43,7 @@ function App() {
 					hasNextPage={hasNextPage}
 				/>
 			)}
+			<ScrollTopArrow />
 		</Container>
 	)
 }
